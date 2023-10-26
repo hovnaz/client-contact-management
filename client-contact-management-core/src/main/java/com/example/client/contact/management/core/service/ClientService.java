@@ -14,6 +14,4 @@ public interface ClientService {
     Page<ClientResponse> findAll(Pageable pageable);
 
     void deleteById(long id);
-
-    void deleteAllByClientId(long id);
 }

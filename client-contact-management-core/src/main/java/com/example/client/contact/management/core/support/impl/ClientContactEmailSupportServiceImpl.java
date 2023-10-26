@@ -1,9 +1,10 @@
 package com.example.client.contact.management.core.support.impl;
 
 import com.example.client.contact.management.core.entity.ClientContactEmail;
+import com.example.client.contact.management.core.exception.EntityNotFoundException;
+import com.example.client.contact.management.core.exception.ErrorMessage;
 import com.example.client.contact.management.core.repository.ClientContactEmailRepository;
 import com.example.client.contact.management.core.support.ClientContactEmailSupportService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class ClientContactEmailSupportServiceImpl implements ClientContactEmailS
     public ClientContactEmail getClientEmailByIdOrThrow(long id) {
         Optional<ClientContactEmail> clientContactEmailOptional = clientContactEmailRepository.findByIdAndDeletionStatusDeletedFlagIsFalse(id);
         if (clientContactEmailOptional.isEmpty()) {
-            throw new EntityNotFoundException("Client contact with id: " + id + " not found");
+            throw new EntityNotFoundException(ErrorMessage.CLIENT_EMAIL_NOT_FOUND);
         }
         return clientContactEmailOptional.get();
     }

@@ -8,7 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Embeddable
-public abstract class Auditable {
+public class Auditable {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

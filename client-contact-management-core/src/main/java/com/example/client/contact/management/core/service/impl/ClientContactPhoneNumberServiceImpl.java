@@ -25,7 +25,6 @@ public class ClientContactPhoneNumberServiceImpl implements ClientContactPhoneNu
     private final ClientContactPhoneNumberMapper clientContactPhoneNumberMapper;
     private final ClientContactPhoneNumberRepository clientContactPhoneNumberRepository;
 
-    // todo petq e unic lini partadir
     @Override
     public ClientContactPhoneNumberResponse addPhoneNumber(ClientContactPhoneNumberRequest clientContactPhoneNumberRequest) {
         Client client = clientSupportService.getClientByIdOrThrow(clientContactPhoneNumberRequest.getClientId());
@@ -43,6 +42,7 @@ public class ClientContactPhoneNumberServiceImpl implements ClientContactPhoneNu
 
     @Override
     public Page<ClientContactPhoneNumberResponse> findAllByClientId(long clientId, Pageable pageable) {
+        clientSupportService.verifyClientExistsOrThrow(clientId);
         Page<ClientContactPhoneNumber> clientContactEmailPage = clientContactPhoneNumberRepository.findAllByClientIdAndDeletionStatusDeletedFlagIsFalse(clientId, pageable);
         return clientContactEmailPage.map(clientContactPhoneNumberMapper::toResponse);
     }
@@ -57,7 +57,8 @@ public class ClientContactPhoneNumberServiceImpl implements ClientContactPhoneNu
     }
 
     @Override
-    public void deleteAllByClientId(long id) {
-        clientContactPhoneNumberRepository.deleteAllByClientId(id);
+    public void deleteAllByClientId(long clientId) {
+        clientSupportService.verifyClientExistsOrThrow(clientId);
+        clientContactPhoneNumberRepository.deleteAllByClientId(clientId);
     }
 }

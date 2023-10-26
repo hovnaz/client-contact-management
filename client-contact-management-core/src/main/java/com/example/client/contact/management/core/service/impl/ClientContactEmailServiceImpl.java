@@ -25,7 +25,6 @@ public class ClientContactEmailServiceImpl implements ClientContactEmailService 
     private final ClientContactEmailMapper clientContactEmailMapper;
     private final ClientContactEmailRepository clientContactEmailRepository;
 
-    // todo petq e unic lini partadir
     @Override
     public ClientContactEmailResponse addEmail(ClientContactEmailRequest contactEmailRequest) {
         Client client = clientSupportService.getClientByIdOrThrow(contactEmailRequest.getClientId());
@@ -57,7 +56,8 @@ public class ClientContactEmailServiceImpl implements ClientContactEmailService 
     }
 
     @Override
-    public void deleteAllByClientId(long id) {
-        clientContactEmailRepository.deleteAllByClientId(id);
+    public void deleteAllByClientId(long clientId) {
+        clientSupportService.verifyClientExistsOrThrow(clientId);
+        clientContactEmailRepository.deleteAllByClientId(clientId);
     }
 }

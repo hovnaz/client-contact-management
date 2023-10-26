@@ -3,7 +3,7 @@ package com.example.client.contact.management.core.entity;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public abstract class DeletionStatus {
+public class DeletionStatus {
 
     private Boolean deletedFlag;
 

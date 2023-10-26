@@ -11,5 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ClientResponse {
 
+    private long id;
     private String clientName;
+    private String email;
 }

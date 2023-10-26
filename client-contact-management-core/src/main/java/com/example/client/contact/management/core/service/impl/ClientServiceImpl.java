@@ -1,7 +1,8 @@
 package com.example.client.contact.management.core.service.impl;
 
 import com.example.client.contact.management.core.entity.Client;
-import com.example.client.contact.management.core.exception.ClientEmailConflictException;
+import com.example.client.contact.management.core.exception.ConflictException;
+import com.example.client.contact.management.core.exception.ErrorMessage;
 import com.example.client.contact.management.core.mapper.ClientMapper;
 import com.example.client.contact.management.core.repository.ClientRepository;
 import com.example.client.contact.management.core.service.ClientContactEmailService;
@@ -35,7 +36,7 @@ public class ClientServiceImpl implements ClientService {
 
         Optional<Client> clientOptional = clientRepository.findByEmailAndDeletionStatusDeletedFlagIsFalse(clientRequest.getEmail());
         if (clientOptional.isPresent()) {
-            throw new ClientEmailConflictException(clientRequest.getEmail());
+            throw new ConflictException(ErrorMessage.CLIENT_EMAIL_ALREADY_EXIST);
         }
         Client client = clientMapper.toEntity(clientRequest);
         Client save = clientRepository.save(client);
@@ -50,24 +51,19 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Page<ClientResponse> findAll(Pageable pageable) {
-        Page<Client> clientPage = clientRepository.findAll(pageable);
+        Page<Client> clientPage = clientRepository.findAllByDeletionStatusDeletedFlagIsFalse(pageable);
         return clientPage.map(clientMapper::toResponse);
     }
 
     @Override
+    @Transactional
     public void deleteById(long id) {
         Client client = clientSupportService.getClientByIdOrThrow(id);
         if (!client.getDeletionStatus().isDeleted()) {
+            clientContactPhoneNumberService.deleteAllByClientId(id);
+            clientContactEmailService.deleteAllByClientId(id);
             client.getDeletionStatus().markAsDeleted();
             clientRepository.save(client);
         }
-    }
-
-    @Override
-    @Transactional
-    public void deleteAllByClientId(long id) {
-        clientRepository.deleteById(id);
-        clientContactPhoneNumberService.deleteAllByClientId(id);
-        clientContactEmailService.deleteAllByClientId(id);
     }
 }

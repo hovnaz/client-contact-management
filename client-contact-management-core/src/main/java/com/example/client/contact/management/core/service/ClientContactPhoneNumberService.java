@@ -15,5 +15,5 @@ public interface ClientContactPhoneNumberService {
 
     void deleteById(long id);
 
-    void deleteAllByClientId(long id);
+    void deleteAllByClientId(long clientId);
 }
