@@ -9,6 +9,9 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The ApiError class represents an error response in the API.
+ */
 @Getter
 @Setter
 public class ApiError {
@@ -30,6 +33,12 @@ public class ApiError {
         return status;
     }
 
+    /**
+     * Add a field-specific error to the error response.
+     *
+     * @param field   The field associated with the error.
+     * @param message The error message for the field.
+     */
     public void addError(String field, String message) {
         if (errors == null) {
             errors = new HashMap<>();

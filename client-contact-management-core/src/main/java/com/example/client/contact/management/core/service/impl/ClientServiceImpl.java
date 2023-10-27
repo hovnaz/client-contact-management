@@ -20,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+/**
+ * The ClientServiceImpl class provides the implementation of the ClientService interface for managing clients.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -33,6 +36,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientResponse addClient(ClientRequest clientRequest) {
+        log.info("Adding a new client with email: {}", clientRequest.getEmail());
 
         Optional<Client> clientOptional = clientRepository.findByEmailAndDeletionStatusDeletedFlagIsFalse(clientRequest.getEmail());
         if (clientOptional.isPresent()) {
@@ -40,30 +44,49 @@ public class ClientServiceImpl implements ClientService {
         }
         Client client = clientMapper.toEntity(clientRequest);
         Client save = clientRepository.save(client);
+
+        log.info("Added a new client with ID: {}", save.getId());
+
         return clientMapper.toResponse(save);
     }
 
     @Override
     public ClientResponse findById(long id) {
+        log.info("Retrieving client by ID: {}", id);
+
         Client client = clientSupportService.getClientByIdOrThrow(id);
+
+        log.info("Retrieved client with ID: {}", id);
+
         return clientMapper.toResponse(client);
     }
 
     @Override
     public Page<ClientResponse> findAll(Pageable pageable) {
+        log.info("Retrieving all clients.");
+
         Page<Client> clientPage = clientRepository.findAllByDeletionStatusDeletedFlagIsFalse(pageable);
+
+        log.info("Retrieved {} clients.", clientPage.getNumberOfElements());
+
         return clientPage.map(clientMapper::toResponse);
     }
 
     @Override
     @Transactional
     public void deleteById(long id) {
+        log.info("Deleting client by ID: {}", id);
+
         Client client = clientSupportService.getClientByIdOrThrow(id);
         if (!client.getDeletionStatus().isDeleted()) {
+            log.info("Deleting all contact phone numbers and email addresses for client with ID: {}", id);
+
             clientContactPhoneNumberService.deleteAllByClientId(id);
             clientContactEmailService.deleteAllByClientId(id);
             client.getDeletionStatus().markAsDeleted();
             clientRepository.save(client);
+
+            log.info("Deleted client with ID: {}", id);
         }
     }
 }

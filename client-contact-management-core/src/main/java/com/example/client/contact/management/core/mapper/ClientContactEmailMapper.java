@@ -8,6 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+/**
+ * The ClientContactEmailMapper class is responsible for mapping between ClientContactEmail entities,
+ * ClientContactEmailRequest DTOs, and ClientContactEmailResponse DTOs.
+ * <p>
+ * This class implements the BaseMapper interface to provide methods for converting
+ * between different representations of ClientContactEmail data, such as entities and DTOs.
+ */
 @Service
 @RequiredArgsConstructor
 public class ClientContactEmailMapper implements BaseMapper<ClientContactEmail, ClientContactEmailRequest, ClientContactEmailResponse> {

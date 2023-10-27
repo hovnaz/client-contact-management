@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The ClientContactEmailRequest class represents a request for creating or updating a client's contact email.
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

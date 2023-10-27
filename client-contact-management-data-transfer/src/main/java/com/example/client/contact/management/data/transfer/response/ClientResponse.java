@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The ClientResponse class represents a response containing client information.
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

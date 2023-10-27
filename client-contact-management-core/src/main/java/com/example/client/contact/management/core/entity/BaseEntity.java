@@ -7,6 +7,12 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The BaseEntity class is an abstract base class for entity objects in the system.
+ * <p>
+ * This class is marked as a @MappedSuperclass, indicating that it provides common
+ * attributes and functionality to be inherited by other entity classes.
+ */
 @MappedSuperclass
 @Getter
 @Setter

@@ -9,6 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The ClientContactPhoneNumber class represents a phone number associated with a client contact.
+ * <p>
+ * This class is marked as an @Entity, indicating that it is a JPA entity mapped
+ * to a database table named "client_contact_phone_number."
+ */
 @Getter
 @Setter
 @AllArgsConstructor

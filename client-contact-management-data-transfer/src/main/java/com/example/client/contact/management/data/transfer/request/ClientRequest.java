@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The ClientRequest class represents a request for creating or updating a client.
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

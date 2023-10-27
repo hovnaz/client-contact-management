@@ -18,10 +18,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * The GlobalExceptionHandler class handles exceptions and provides error responses for the application.
+ */
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
+    /**
+     * A mapping of exception classes to error messages.
+     */
     private static final Map<Class<? extends BaseException>, Supplier<ErrorMessage>> EXCEPTION_ERROR_MAP = new HashMap<>();
 
     static {
@@ -29,6 +35,12 @@ public class GlobalExceptionHandler {
         EXCEPTION_ERROR_MAP.put(ConflictException.class, () -> ErrorMessage.CLIENT_EMAIL_ALREADY_EXIST);
     }
 
+    /**
+     * Handles MethodArgumentNotValidException, typically raised when input validation fails.
+     *
+     * @param ex The MethodArgumentNotValidException.
+     * @return A ResponseEntity with a validation error response.
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
@@ -43,6 +55,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
+    /**
+     * Handles runtime exceptions and returns an appropriate error response.
+     *
+     * @param e The exception to handle.
+     * @return A ResponseEntity with an error response.
+     */
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiError> handleException(BaseException e) {
         Supplier<ErrorMessage> errorSupplier = EXCEPTION_ERROR_MAP.getOrDefault(e.getClass(), () -> ErrorMessage.ACCESS_DENIED);
@@ -54,6 +72,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
     }
 
+    /**
+     * Creates an ApiError object with the provided error message and message.
+     *
+     * @param error   The error message and associated HTTP status.
+     * @param message The error message describing the error.
+     * @return An ApiError object.
+     */
     private ApiError createApiError(ErrorMessage error, String message) {
         return new ApiError(error, message);
     }

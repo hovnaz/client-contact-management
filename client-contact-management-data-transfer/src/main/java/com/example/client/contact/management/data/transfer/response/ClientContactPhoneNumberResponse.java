@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The ClientContactPhoneNumberResponse class represents a response containing client contact phone number information.
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
